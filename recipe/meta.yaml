@@ -1,45 +1,50 @@
-{% set name = "<PLEASE ADD PKG NAME>" %}
-{% set version = "<PLEASE ADD PKG VERSION>" %}
+{% set name = "protobuf-py-ext" %}
+{% set version = "0.4.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: <sha256>
+  - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
+    sha256: a0d48a68c992bacb7b20bffba8300c66608db55d1146cd5df4841d7ff7b8448d
+  - url: https://raw.githubusercontent.com/bufbuild/protobuf-py/v{{ version }}/LICENSE
+    sha256: 1c5e374691049b02313a909936cb4b70df33e5d94404688f27766fa42b8088e5
+    fn: LICENSE
 
 build:
-  number: 0
+  skip: True  # [py<310]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: True  # [py<38]
+  number: 0
 
 requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('rust') }}
   host:
     - python
+    - maturin >=1.12,<2.0
     - pip
   run:
     - python
 
 test:
   imports:
-    - {{ name.replace('-', '.') }}
-  requires:
-    - pip
+    - protobuf_ext
   commands:
     - pip check
+  requires:
+    - pip
+    - python
 
 about:
-  home: <PLEASE ADD HOME URL>
-  summary: <PLEASE ADD SUMMARY>
-  description: |
-    <PLEASE ADD DESCRIPTION>
-  license: <PLEASE ADD LICENSE>
-  license_family: <PLEASE ADD LICENSE_FAMILY>
-  license_file: <PLEASE_ADD_LICENSE_FILE>
-  dev_url: <PLEASE ADD DEV URL>
-  doc_url: <PLEASE ADD DOC URL>
+  home: https://github.com/bufbuild/protobuf-py
+  summary: Native extension for protobuf-py
+  doc_url: https://protobufpy.com/
+  dev_url: https://github.com/bufbuild/protobuf-py
+  license: Apache-2.0
+  license_file: LICENSE
 
 extra:
   recipe-maintainers:
-    - Jrice1317
+    - imykhailov
