@@ -19,6 +19,7 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('rust') }}
   host:
@@ -40,9 +41,13 @@ test:
 about:
   home: https://github.com/bufbuild/protobuf-py
   summary: Native extension for protobuf-py
+  description: |
+    Rust-backed native extension providing the core Protocol Buffers message
+    implementation used by protobuf-py.
   doc_url: https://protobufpy.com/
   dev_url: https://github.com/bufbuild/protobuf-py
   license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
 
 extra:
